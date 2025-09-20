@@ -41,11 +41,12 @@ async def verify_x_hub_signature(request: Request, call_next):
     return await call_next(request)
 
 
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    return f"<pre>{received_updates}</pre>"
+# @app.get("/", response_class=HTMLResponse)
+# async def root():
+#     return f"<pre>{received_updates}</pre>"
 
 
+@app.get("/")
 @app.get("/facebook")
 @app.get("/instagram")
 @app.get("/threads")
