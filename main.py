@@ -59,6 +59,14 @@ async def verify_webhook(request: Request):
     raise HTTPException(status_code=400)
 
 
+@app.post("/")
+async def handle_facebook_update(request: Request):
+    body = await request.json()
+    print("Facebook request body:", body)
+    received_updates.insert(0, body)
+    return status.HTTP_200_OK
+
+
 @app.post("/facebook")
 async def handle_facebook_update(request: Request):
     body = await request.json()
