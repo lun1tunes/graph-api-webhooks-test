@@ -85,5 +85,5 @@ async def handle_threads_update(request: Request):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, port=int(os.getenv("PORT", 5000)))
-    # uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+    port = int(os.getenv("PORT", "5000"))
+    uvicorn.run("main:app", port=port, reload=os.getenv("ENV") == "development")
