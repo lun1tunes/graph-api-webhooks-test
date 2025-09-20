@@ -13,9 +13,9 @@ ENV PATH="/root/.local/bin:$PATH"
 # Копируем файлы Poetry
 COPY pyproject.toml poetry.lock* ./
 
-# Устанавливаем зависимости без установки текущего проекта
+# Устанавливаем зависимости без установки текущего проекта (правильные флаги)
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-root --no-dev --no-interaction --no-ansi
+    && poetry install --without dev --no-root --no-interaction
 
 # Копируем код приложения
 COPY . .
@@ -29,4 +29,3 @@ EXPOSE 5000
 
 # Запускаем приложение
 CMD ["uvicorn", "main:app", "--port", "5000"]
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
