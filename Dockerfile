@@ -2,21 +2,20 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Устанавливаем зависимости системы
+# Устанавливаем зависимости системы и Poetry
 RUN apt-get update && apt-get install -y \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sSL https://install.python-poetry.org | python3 -
 
-# Устанавливаем Poetry
-ENV POETRY_HOME=/opt/poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && cd /usr/local/bin && ln -s /opt/poetry/bin/poetry
+ENV PATH="/root/.local/bin:$PATH"
 
 # Копируем файлы Poetry
 COPY pyproject.toml poetry.lock* ./
 
-# Устанавливаем зависимости
-RUN poetry install --only main --no-interaction --no-ansi
+# Устанавливаем зависимости без установки текущего проекта
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-root --no-dev --no-interaction --no-ansi
 
 # Копируем код приложения
 COPY . .
